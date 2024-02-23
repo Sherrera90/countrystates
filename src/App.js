@@ -1,45 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import './App.css';
 import axios from 'axios';
 
-
-
-export default function App() {
-  const [posts, setPosts] = useState([]);
-  // const [selectedState, setSelectedState] = useState([]);
+function App() {
+  const [currentCountry, setCurrentCountry] = useState('');
+  const [countries, setCountries] = useState([]);
 
   useEffect(() => {
-    axios.get('https://xc-countries-api.fly.dev/api/countries/')
-      .then(response => {
-        console.log(response.data)
-        setPosts(response.data);
-        // setSelectedState(response.data[0]);
-      })
-      .catch(error => {
-        console.error(error);
+    axios
+      .get('https://xc-countries-api.fly.dev/api/countries/')
+      .then((response) => {
+        setCountries(response.data);
       });
-      const options ={
-        name:name,
-        id:id,
-        code:code
-      };
   }, []);
 
-      const handleChange = (event) => {
-        console.log('stephanie', event, event.target.value);
-        setPosts(event.target.value);
-        // setSelectedState(event.target.value);
-      };
-
-  return(
-
+  const handleChange = (event) => {
+    console.log('stephanie', event, event.target.value);
+    setCurrentCountry(event.target.value);
+  };
+  return (
     <div>
-      <h1> Country and states</h1>
-      <button onClick={(e) => handleChange(e)}
-      type ='button'> Click for Data</button>
-      {setPosts.name && setPosts.map(name =>{
-        return <p>{name}</p>
-      })}
+      <label>
+        <h1> Where Do You Live? </h1>
+      </label>
+      <select onChange={handleChange}>
+        {countries.map((country) => {
+          return <option>{country.name}</option>;
+        })}
+      </select>
+
+      <div>
+        <p> I live in {currentCountry} </p>
+      </div>
     </div>
+  );
+}
+
+export default App;
 
   //   <div>
   //       <label>
@@ -50,9 +47,6 @@ export default function App() {
   //       </option>
   //       </select>
   //   </div>
-  );
-
-}
 
 
 
